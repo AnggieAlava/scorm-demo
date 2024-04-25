@@ -1,0 +1,276 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>Course FLask</title>
+    <script src="api.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        function setIframeHeight(id, navWidth) {
+            if (document.getElementById) {
+                var theIframe = document.getElementById(id);
+                if (theIframe) {
+                    var height = getWindowHeight();
+                    theIframe.style.height = Math.round(height) - navWidth + 'px';
+                    theIframe.style.marginTop =
+                        Math.round(
+                            (height - navWidth - parseInt(theIframe.style.height)) / 2
+                        ) + 'px';
+                }
+            }
+        }
+
+        function getWindowHeight() {
+            var height = 0;
+            if (window.innerHeight) {
+                height = window.innerHeight - 18;
+            } else if (
+                document.documentElement &&
+                document.documentElement.clientHeight
+            ) {
+                height = document.documentElement.clientHeight;
+            } else if (document.body && document.body.clientHeight) {
+                height = document.body.clientHeight;
+            }
+            return height;
+        }
+
+        function SetupIFrame() {
+            var navWidth = 40;
+            setIframeHeight('contentFrame', navWidth);
+            window.setTimeout(
+                'window.onresize = function() { setIframeHeight("contentFrame", ' +
+                navWidth +
+                '); }',
+                1000
+            );
+        }
+
+        var pageArray = new Array(2);
+
+        pageArray[0] = 'resources/01-install-flask/install.html';
+        pageArray[1] = 'resources/02-your-first-endpoint/endpoint.html';
+
+        var currentPage = null;
+        var startTimeStamp = null;
+        var processedUnload = false;
+        var reachedEnd = false;
+
+        function doStart() {
+            SetupIFrame();
+
+            startTimeStamp = new Date();
+
+            ScormProcessInitialize();
+
+            var completionStatus = ScormProcessGetValue('cmi.core.lesson_status');
+            if (completionStatus == 'not attempted') {
+                ScormProcessSetValue('cmi.core.lesson_status', 'incomplete');
+            }
+
+            var bookmark = ScormProcessGetValue('cmi.core.lesson_location');
+
+            if (bookmark == '') {
+                currentPage = 0;
+            } else {
+                if (
+                    confirm(
+                        'Would you like to resume from where you previously left off?'
+                    )
+                ) {
+                    currentPage = parseInt(bookmark, 10);
+                } else {
+                    currentPage = 0;
+                }
+            }
+
+            goToPage();
+        }
+
+        function goToPage() {
+            var theIframe = document.getElementById('contentFrame');
+            var prevButton = document.getElementById('butPrevious');
+            var nextButton = document.getElementById('butNext');
+
+            theIframe.src = '../' + pageArray[currentPage];
+
+            if (currentPage == 0) {
+                nextButton.disabled = false;
+                prevButton.disabled = true;
+            } else if (currentPage == pageArray.length - 1) {
+                nextButton.disabled = true;
+                prevButton.disabled = false;
+            } else {
+                nextButton.disabled = false;
+                prevButton.disabled = false;
+            }
+
+            ScormProcessSetValue('cmi.core.lesson_location', currentPage);
+
+            if (currentPage == pageArray.length - 1) {
+                reachedEnd = true;
+                ScormProcessSetValue('cmi.core.lesson_status', 'completed');
+            }
+        }
+
+        function doUnload(pressedExit) {
+            if (processedUnload == true) {
+                return;
+            }
+
+            processedUnload = true;
+
+            var endTimeStamp = new Date();
+            var totalMilliseconds =
+                endTimeStamp.getTime() - startTimeStamp.getTime();
+            var scormTime = ConvertMilliSecondsToSCORMTime(
+                totalMilliseconds,
+                false
+            );
+
+            ScormProcessSetValue('cmi.core.session_time', scormTime);
+
+            if (pressedExit == false && reachedEnd == false) {
+                ScormProcessSetValue('cmi.core.exit', 'suspend');
+            }
+
+            ScormProcessFinish();
+        }
+
+        function doPrevious() {
+            if (currentPage > 0) {
+                currentPage--;
+            }
+            goToPage();
+        }
+
+        function doNext() {
+            if (currentPage < pageArray.length - 1) {
+                currentPage++;
+            }
+            goToPage();
+        }
+
+        function doExit() {
+            if (
+                reachedEnd == false &&
+                confirm('Would you like to save your progress to resume later?')
+            ) {
+                ScormProcessSetValue('cmi.core.exit', 'suspend');
+            } else {
+                ScormProcessSetValue('cmi.core.exit', '');
+            }
+
+            doUnload(true);
+        }
+
+        function ConvertMilliSecondsToSCORMTime(
+            intTotalMilliseconds,
+            blnIncludeFraction
+        ) {
+            var intHours;
+            var intintMinutes;
+            var intSeconds;
+            var intMilliseconds;
+            var intHundredths;
+            var strCMITimeSpan;
+
+            if (blnIncludeFraction == null || blnIncludeFraction == undefined) {
+                blnIncludeFraction = true;
+            }
+
+            intMilliseconds = intTotalMilliseconds % 1000;
+
+            intSeconds = ((intTotalMilliseconds - intMilliseconds) / 1000) % 60;
+
+            intMinutes =
+                ((intTotalMilliseconds - intMilliseconds - intSeconds * 1000) /
+                    60000) %
+                60;
+
+            intHours =
+                (intTotalMilliseconds -
+                    intMilliseconds -
+                    intSeconds * 1000 -
+                    intMinutes * 60000) /
+                3600000;
+
+            if (intHours == 10000) {
+                intHours = 9999;
+
+                intMinutes = (intTotalMilliseconds - intHours * 3600000) / 60000;
+                if (intMinutes == 100) {
+                    intMinutes = 99;
+                }
+                intMinutes = Math.floor(intMinutes);
+
+                intSeconds =
+                    (intTotalMilliseconds - intHours * 3600000 - intMinutes * 60000) /
+                    1000;
+                if (intSeconds == 100) {
+                    intSeconds = 99;
+                }
+                intSeconds = Math.floor(intSeconds);
+
+                intMilliseconds =
+                    intTotalMilliseconds -
+                    intHours * 3600000 -
+                    intMinutes * 60000 -
+                    intSeconds * 1000;
+            }
+
+            intHundredths = Math.floor(intMilliseconds / 10);
+
+            strCMITimeSpan =
+                ZeroPad(intHours, 4) +
+                ':' +
+                ZeroPad(intMinutes, 2) +
+                ':' +
+                ZeroPad(intSeconds, 2);
+
+            if (blnIncludeFraction) {
+                strCMITimeSpan += '.' + intHundredths;
+            }
+
+            if (intHours > 9999) {
+                strCMITimeSpan = '9999:99:99';
+
+                if (blnIncludeFraction) {
+                    strCMITimeSpan += '.99';
+                }
+            }
+
+            return strCMITimeSpan;
+        }
+
+        function ZeroPad(intNum, intNumDigits) {
+            var strTemp;
+            var intLen;
+            var i;
+
+            strTemp = new String(intNum);
+            intLen = strTemp.length;
+
+            if (intLen > intNumDigits) {
+                strTemp = strTemp.substr(0, intNumDigits);
+            } else {
+                for (i = intLen; i < intNumDigits; i++) {
+                    strTemp = '0' + strTemp;
+                }
+            }
+            return strTemp;
+        }
+    </script>
+</head>
+
+<body onload="doStart(false);" onbeforeunload="doUnload(false);" onunload="doUnload();">
+    <iframe width="100%" id="contentFrame" src=""></iframe>
+
+    <div id="navDiv">
+        <input type="button" value="<- Previous" id="butPrevious" onclick="doPrevious();" />
+        <input type="button" value="Next ->" id="butNext" onclick="doNext();" />
+        <input type="button" value="Exit" id="butExit" onclick="doExit();" />
+    </div>
+</body>
+
+</html>

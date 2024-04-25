@@ -1,0 +1,35 @@
+<?xml version="1.0" standalone="no"?>
+
+<manifest identifier="com.scorm.golfsamples.runtime.basicruntime.12" version="1"
+  xmlns="http://www.imsproject.org/xsd/imscp_rootv1p1p2"
+  xmlns:adlcp="http://www.adlnet.org/xsd/adlcp_rootv1p2"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.imsproject.org/xsd/imscp_rootv1p1p2 imscp_rootv1p1p2.xsd
+                      http://www.imsglobal.org/xsd/imsmd_rootv1p2p1 imsmd_rootv1p2p1.xsd
+                      http://www.adlnet.org/xsd/adlcp_rootv1p2 adlcp_rootv1p2.xsd">
+
+  <metadata>
+    <schema>ADL SCORM</schema>
+    <schemaversion>1.2</schemaversion>
+  </metadata>
+  <organizations default="four_geeks_academy_org">
+    <organization identifier="four_geeks_academy_org">
+      <title>Learning Flask Interactive</title>
+      <item identifier="item_1" identifierref="resource">
+        <title>Learning Flask</title>
+      </item>
+    </organization>
+  </organizations>
+  <resources>
+    <resource identifier="resource" type="webcontent" adlcp:scormtype="sco"
+      href="src/index.html">
+      <file href="resources/01-install-flask/install.html" />
+      <file href="resources/01-install-flask/install.png" />
+      <file href="resources/02-your-first-endpoint/endpoint.html" />
+      <file href="resources/02-your-first-endpoint/endpoint.png" />
+      <file href="src/index.html" />
+      <file href="src/api.js" />
+      <file href="resources/styles/styles.css" />
+    </resource>
+  </resources>
+</manifest>

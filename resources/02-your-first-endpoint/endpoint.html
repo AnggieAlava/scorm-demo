@@ -1,0 +1,40 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
+
+<head>
+	<title>Endpoint</title>
+	<style type="text/css" media="screen">
+		@import url(../styles/styles.css);
+	</style>
+	<script src="/src/api.js" type="text/javascript"></script>
+</head>
+
+<body>
+	<div class="container">
+		<h1>Your First Endpoint</h1>
+		<img src="endpoint.png" class="flask-img" alt="endpoint" />
+		<h3>Anatomy of a Flask route</h3>
+		<p>There are two parts to a Flask route:</p>
+		<ol class="list">
+			<li class="list-item">The endpoint decorator</li>
+			<code class="code-block">@app.get("/store")</code>
+			<li class="list-item">The function that should run</li>
+			<code class="code-block">def function_name(): </code>
+		</ol>
+		<p>
+			The endpoint decorator registers the
+			route's endpoint with Flask. That's the <em>/store</em> bit. That
+			way, the Flask app knows that when it receives a request for
+			<em>/store</em>, it should run the function.
+		</p>
+		<p>
+			The function's job is to do everything that it should, and at the end
+			return something. In most REST APIs, we return JSON, but you can return
+			anything that can be represented as text (e.g. XML, HTML, YAML, plain
+			text, or almost anything else).
+		</p>
+	</div>
+</body>
+
+</html>

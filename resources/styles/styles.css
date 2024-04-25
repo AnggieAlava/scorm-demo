@@ -1,0 +1,76 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: snow;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  border: 2px solid grey;
+  display: grid;
+  place-content: center;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: rgb(250, 234, 234);
+  border-radius: 8px;
+}
+
+h1 {
+  color: #279940;
+}
+
+h2 {
+  color: #007bff;
+}
+
+h3,
+h4 {
+  color: #35af31d5;
+}
+
+p {
+  font-size: 14px;
+}
+
+.flask-img {
+  display: block;
+  margin: 20px auto;
+  width: 100%;
+  max-width: 800px;
+  border-radius: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  .flask-img {
+    max-width: 400px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .flask-img {
+    max-width: 300px;
+  }
+}
+
+.code-block {
+  background-color: #f8f9fa;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 8px;
+  margin: 10px;
+}
+
+.list {
+  list-style-type: decimal;
+  padding-left: 20px;
+}
+
+.list-item {
+  margin: 15px;
+  color: #777;
+}
+
+code {
+  margin: 25px;
+}

@@ -1,0 +1,43 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
+
+<head>
+	<title>Installing Flask</title>
+	<style type="text/css" media="screen">
+		@import url(../styles/styles.css);
+	</style>
+	<script src="/src/api.js" type="text/javascript"></script>
+</head>
+
+<body>
+	<div class="container">
+		<h2>Getting set up</h2>
+		<p>Create a virtual environment and activate it.</p>
+		<code class="code-block">python3.10 -m venv .venv</code>
+		<img src="./install.png" class="flask-img" />
+
+		<h3>Install Flask.</h3>
+		<code class="code-block">pip install flask</code>
+
+		<h4>
+			Create a file for the Flask app. It is more often called app.py
+		</h4>
+		<p><strong>app.py</strong></p>
+		<h4>Create the Flask app</h4>
+
+		<code class="code-block">from flask import Flask app = Flask(__name__)
+		</code>
+
+		<p class="item-">
+			<em>Now you can run this app using the Flask Command-Line Interface (CLI):</em>
+		</p>
+		<code class="code-block">flask run</code>
+		<blockquote>
+			But the app doesn't do anything yet! <strong> Let's work on our first API
+				endpoint next. </strong>
+		</blockquote>
+	</div>
+</body>
+
+</html>
