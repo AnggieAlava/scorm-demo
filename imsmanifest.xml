@@ -22,14 +22,14 @@
   </organizations>
   <resources>
     <resource identifier="resource" type="webcontent" adlcp:scormtype="sco"
-      href="src/index.html">
+      href="config/index.html">
       <file href="resources/01-install-flask/install.html" />
       <file href="resources/01-install-flask/install.png" />
       <file href="resources/02-your-first-endpoint/endpoint.html" />
       <file href="resources/02-your-first-endpoint/endpoint.png" />
-      <file href="src/index.html" />
-      <file href="src/api.js" />
       <file href="resources/styles/styles.css" />
+      <file href="config/index.html" />
+      <file href="config/api.js" />
     </resource>
   </resources>
 </manifest>
